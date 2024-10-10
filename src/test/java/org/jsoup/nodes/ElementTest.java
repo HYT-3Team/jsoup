@@ -3086,7 +3086,7 @@ public class ElementTest {
 
         String html = "<html><body>Break\ntest</body></html>";
 
-        Document.OutputSettings outputSettings = new Document.OutputSettings;
+        Document.OutputSettings outputSettings = new Document.OutputSettings();
         outputSettings.prettyPrint(false);
 
         String newLineString = Jsoup.clean(html, "", Safelist.none(), outputSettings);
@@ -3099,7 +3099,7 @@ public class ElementTest {
         String html = "<html><body>Line1<br>Line2<p>Paragraph</p></body></html>";
 
         Document doc = Jsoup.parse(html);
-        Document.OutputSettings outputSettings = new Document.OutputSettings;
+        Document.OutputSettings outputSettings = new Document.OutputSettings();
         outputSettings.prettyPrint(false);
         
         doc.outputSettings(outputSettings);
