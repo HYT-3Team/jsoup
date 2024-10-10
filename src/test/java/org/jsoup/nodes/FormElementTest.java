@@ -233,7 +233,7 @@ public class FormElementTest {
 
         Faker faker = new Faker();
 
-        String randomUsername = faker.internet().userName();
+        String randomUsername = faker.name().username();
         String randomPassword = faker.internet().password();
 
         String html = "<html><body>"

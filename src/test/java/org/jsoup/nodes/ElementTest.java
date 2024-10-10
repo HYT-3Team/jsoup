@@ -13,6 +13,7 @@ import org.jsoup.select.Evaluator;
 import org.jsoup.select.NodeFilter;
 import org.jsoup.select.NodeVisitor;
 import org.jsoup.select.QueryParser;
+import org.jsoup.safety.Safelist;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
