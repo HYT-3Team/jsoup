@@ -48,7 +48,7 @@ public class AttributesTest {
         assertEquals(a.html(), a.toString());
     }
 
-    // Added test to see if an attribute is not empty.
+    // Added test to see if an attribute is not empty and throws an exception if is. 
     @Test public void testExceptionOnEmptyAttributeAccess(){
         String html = "<div id='test' data-info=''></div>";
 

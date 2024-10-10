@@ -36,7 +36,7 @@ public class UrlConnectTest {
     private static final String WEBSITE_WITH_SNI = "https://jsoup.org/";
     public static String browserUa = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36";
 
-    // Added a 404 test when connecting to a URL.
+    // Added a 404 test when connecting to a URL - used the website spring.io which contains the explicit code 404.
     @Test public void loading404() throws IOException{
         try{
             Document doc = Jsoup.connect("https://spring.io/page-does-not-exist").get();

@@ -228,6 +228,7 @@ public class FormElementTest {
         assertEquals("two", keyVals.get(1).value());
     }
 
+    // Added a test that simulates form submission using javaFaker.
     @Test public void testFormSubmission() {
 
         Faker faker = new Faker();

@@ -3081,7 +3081,7 @@ public class ElementTest {
         assertEquals("original", original.id());
     }
 
-    // Added test to see if line breaks are properly applied when using backslash n
+    // Added test to see if line breaks are properly applied when using backslash n.
     @Test public void testBackslashNLineBreak(){
 
         String html = "<html><body>Break\ntest</body></html>";
@@ -3093,7 +3093,7 @@ public class ElementTest {
         assertEquals("Break\ntest", newLineString);
     }
 
-    // Added test to see if line breaks are properly applied when using <br> or <p>
+    // Added test to see if line breaks are properly applied when using <br> or <p>.
     @Test public void testLineBreakApplication(){
 
         String html = "<html><body>Line1<br>Line2<p>Paragraph</p></body></html>";
