@@ -2,6 +2,10 @@ package org.jsoup.nodes;
 
 import org.jsoup.Jsoup;
 import org.junit.jupiter.api.Test;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+import org.junit.Test;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -44,6 +48,19 @@ public class AttributesTest {
         assertEquals(a.html(), a.toString());
     }
 
+    // Added test to see if an attribute is not empty.
+    @Test public void testExceptionOnEmptyAttributeAccess(){
+        String html = "<div id='test' data-info=''></div>";
+
+        Document doc = Jsoup.parse(html, "", Parser.htmlParser());
+
+        Element element = doc.getElementById("test");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            validateAttribute(element.attr("data-info"));
+        });
+    }
+    
     @Test
     public void testIteratorRemovable() {
         Attributes a = new Attributes();

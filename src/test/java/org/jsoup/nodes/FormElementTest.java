@@ -1,5 +1,7 @@
 package org.jsoup.nodes;
 
+import com.github.javafaker.Faker;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.integration.TestServer;
@@ -224,5 +226,37 @@ public class FormElementTest {
         List<Connection.KeyVal> keyVals = form.formData();
         assertEquals("one", keyVals.get(0).value());
         assertEquals("two", keyVals.get(1).value());
+    }
+
+    @Test public void testFormSubmission() {
+
+        Faker faker = new Faker();
+
+        String randomUsername = faker.internet().userName();
+        String randomPassword = faker.internet().password();
+
+        String html = "<html><body>"
+                    + "<form id='testForm' action='/submit' method='post'>"
+                    + "<input type='text' name='username' value='" + randomUsername + "'/>"
+                    + "<input type='password' name='password' value='" + randomPassword + "'/>"
+                    + "<input type='submit' value='Submit'/>"
+                    + "</form>"
+                    + "</body></html>";
+
+        Document doc = Jsoup.parse(html);
+        Element form = doc.selectFirst("form#testForm");
+
+        assertNotNull(form);
+
+        String action = form.attr("action");
+        String method = form.attr("method");
+        String username = form.select("[name=username]").val();
+        String password = form.select("[name=password]").val();
+
+        assertEquals("/submit", action);
+        assertEquals("post", method);
+
+        assertEquals(randomUsername, username);
+        assertEquals(randomPassword, password);
     }
 }

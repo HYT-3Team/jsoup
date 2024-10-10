@@ -451,6 +451,13 @@
       <version>1.0.0</version>
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <!-- java Faker library added for bonus testing purposes-->
+      <groupId>com.github.javafaker</groupId>
+      <artifactId>javafaker</artifactId>
+      <version>1.0.2</version>
+      <scope>test</scope>
   </dependencies>
 
   <dependencyManagement>

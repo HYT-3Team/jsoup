@@ -1,5 +1,7 @@
 package org.jsoup.nodes;
 
+import com.github.javafaker.Faker;
+
 import org.jsoup.Jsoup;
 import org.jsoup.TextUtil;
 import org.jsoup.helper.ValidationException;
@@ -2970,4 +2972,144 @@ public class ElementTest {
         assertEquals("<p CLASS=\"YES\">One</p>", p.outerHtml());
         assertEquals("CLASS=\"YES\"", attr.html());
     }
+
+    // Added test for text extraction created using random elements using javaFaker.
+    @Test public void testRandomTextExtraction(){
+        Faker faker = new Faker();
+
+        String randomName = faker.name().fullName();
+        String randomSentence = faker.lorem().sentence();
+        String randomParagraph = faker.lorem().paragraph();
+
+        String html = "<html><body>"
+                    + "<div class='name'>" + randomName + "</div>"
+                    + "<p class='sentence'>" + randomSentence + "</p>"
+                    + "<p class='paragraph'>" + randomParagraph + "</p>"
+                    + "</body></html>";
+        
+        Document doc = Jsoup.parse(html);
+
+        Element nameDiv = doc.selectFirst("div.name");
+        assertNotNull(nameDiv);
+        assertEquals(randomName, nameDiv.text());
+
+        Element sentenceP = doc.selectFirst("p.sentence");
+        assertNotNull(sentenceP);
+        assertEquals(randomSentence, sentenceP.text());
+
+        Element paragraphP = doc.selectFirst("p.paragraph");
+        assertNotNull(paragraphP);
+        assertEquals(randomParagraph, paragraphP.text());
+    }
+
+    // Added test for attribute manipulation
+    @Test public void testAttributeModification(){
+        String html = "<html><body><a href='http://example.com'>Click here</a></body></html>";
+
+        Document doc = Jsoup.parse(html);
+
+        Element link = doc.selectFirst("a");
+
+        assertNotNull(link);
+        assertEquals("http://example.com", link.attr("href"));
+
+        link.attr("href", "http://updated.com");
+
+        assertEquals("http://updated.com", link.attr("href"));
+    }
+
+    // Added test for CSS class manipulation
+    @Test public void testCssClassManipulation(){
+        String html = "<html><body><div class='original-class'>Content</div></body></html>";
+
+        Document doc = Jsoup.parse(html);
+
+        Element div = doc.selectFirst("div");
+
+        assertNotNull(div);
+        assertEquals("original-class", div.className());
+
+        div.addClass("new-class");
+        assertTrue(div.hasClass("new-class"));
+        assertEquals("original-class new-class", div.className());
+
+        div.removeClass("original-class");
+        assertFalse(div.hasClass("original-class"));
+        assertEquals("new-class", div.className());
+    }
+
+    // Added test for element removal
+    @Test public void testElementRemoval(){
+        String html = "<html><body><div id='to-remove'>Remove me!</div><p>Keep me!</p></body></html>";
+
+        Document doc = Jsoup.parse(html);
+
+        Element toRemove = doc.selectFirst("div#to-remove");
+
+        assertNotNull(toRemove);
+        assertEquals("Remove me!", toRemove.text());
+
+        toRemove.remove();
+
+        Element removedDiv = doc.selectFirst("div#to-remove");
+        assertNull(removedDiv);
+
+        Element p = doc.selectFirst("p");
+        assertNotNull(p);
+        assertEquals("Keep me!", p.text());
+    }
+
+    // Added test for cloning elements
+    @Test public void testElementCloning() {
+        
+        String html = "<div id='original'>Original Content</div>";
+        Document doc = Jsoup.parse(html);
+        Element original = doc.selectFirst("div#original");
+
+        assertNotNull(original);
+        assertEquals("Original Content", original.text());
+
+        Element clone = original.clone();
+
+        clone.attr("id", "clone");
+        clone.text("Cloned Content");
+
+        assertEquals("Cloned Content", clone.text());
+        assertEquals("clone", clone.id());
+
+        assertEquals("Original Content", original.text());
+        assertEquals("original", original.id());
+    }
+
+    // Added test to see if line breaks are properly applied when using backslash n
+    @Test public void testBackslashNLineBreak(){
+
+        String html = "<html><body>Break\ntest</body></html>";
+
+        Document.OutputSettings outputSettings = new Document.OutputSettings;
+        outputSettings.prettyPrint(false);
+
+        String newLineString = Jsoup.clean(html, "", Safelist.none(), outputSettings);
+        assertEquals("Break\ntest", newLineString);
+    }
+
+    // Added test to see if line breaks are properly applied when using <br> or <p>
+    @Test public void testLineBreakApplication(){
+
+        String html = "<html><body>Line1<br>Line2<p>Paragraph</p></body></html>";
+
+        Document doc = Jsoup.parse(html);
+        Document.OutputSettings outputSettings = new Document.OutputSettings;
+        outputSettings.prettyPrint(false);
+        
+        doc.outputSettings(outputSettings);
+        doc.select("br").before("\\n");
+        doc.select("p").before("\\n");
+
+        String str = doc.html().replaceAll("\\\\n", "\n");
+        String strNewLines = Jsoup.clean(str, "", Safelist.none(), outputSettings);
+
+        assertEquals("Line1\nLine2\nParagraph", strNewLines);
+    }
+
 }
