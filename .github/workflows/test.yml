@@ -15,8 +15,16 @@ jobs:
         os: [ubuntu-latest]
         # choosing to run a reduced set of LTS, current, and next, to balance coverage and execution time
         java: [17]
+        # More Flags? Surrender yourself to a better performance, jsoup!
+        jvm_flag: [
+          "-XX:+UseG1GC",
+          "-XX:+UnlockDiagnosticVMOptions",
+          "-XX:+ShowCodeDetailsInExceptionMessages",
+          "-XX:+AlwaysPreTouch",
+          "-XX:+ExtendedDTraceProbes"
+        ]
       fail-fast: false
-    name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}
+    name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}, Flag ${{ matrix.jvm_flag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,6 +36,9 @@ jobs:
           distribution: 'zulu'
           cache: 'maven'
 
+      - name: Set Maven options with JVM flag
+        run: echo "MAVEN_OPTS=${{ matrix.jvm_flag }}" >> $GITHUB_ENV
+          
       - name: Maven Compile
         run: mvn -X compile -B --file pom.xml
 
