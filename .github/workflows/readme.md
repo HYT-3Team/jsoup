@@ -23,3 +23,6 @@ Ce flag a le but de garantir une allocation de pages mémoire dès le départ. C
 
 Ce flag active les sondes DTrace supplémentaires plus détaillés pour observer l'activité de la JVM, ce qui nous permet de profiler les performances de jsoup
 sous charge ou lors des opérations de parsing chargés.
+
+
+P.S. Pas de lolcommits malheureusement, je code sur mon PC et je n'ai pas de webcam. :(
